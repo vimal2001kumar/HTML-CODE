@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Object in single local storage</title>
+	<style media="screen">
+		
+	</style>
+</head>
+   
+<body>
+    <h2 id="title">object in local storage javascript</h2>
+</body>
+<script type="text/javascript">
+	let myobj={
+         name: "vimal",
+         age: 21
+	};
+	let myobj_serialized=JSON.stringify(myobj);
+	console.log(myobj.serialized);
+	localStroage.setItem("myobj",myobj);
+	console.log(localStroage);
+
+	let myobj_deserialized=JSON.parse(localStorage.getItem("myobj");
+	console.log(myobj_deserialized); 
+
+</script>
+</html>

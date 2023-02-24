@@ -1,97 +1,68 @@
-// GET REQUEST
-function getTodos() {
-  console.log('GET Request');
+const priceInput = document.getElementById("price");
+const productInput = document.getElementById("name");
+const categoryInput = document.getElementById("category");
+const myForm = document.getElementById("form");
+
+myForm.addEventListener("submit", onSubmit);
+
+window.addEventListener("DOMContentLoaded", () => {
+  axios
+    .get(
+      "https://crudcrud.com/api/f0de899ddf6c44438f7faf9c1e24662d/productData"
+    )
+    .then((res) => {
+      res.data.forEach((element) => {
+        display(element);
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+});
+
+//onSubmitOfForm
+function onSubmit(e) {
+  e.preventDefault();
+  if (
+    priceInput.value === "" ||
+    productInput.value === "" ||
+    categoryInput.value === ""
+  ) {
+    ;
+  } else {
+    let newData = {
+      price: priceInput.value,
+      name: priceInput.value,
+      category: categoryInput.value,
+    };
+    axios
+      .post(
+        "https://crudcrud.com/api/f0de899ddf6c44438f7faf9c1e24662d/productData",
+        newData
+      )
+      .then((res) => {
+        display(newData);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 }
 
-// POST REQUEST
-function addTodo() {
-  console.log('POST Request');
+function display(data) {
+  const parentNode = document.getElementById(`${data.category}UL`);
+  const childHTML = `<li id="${data.category}LI">${data.price}-${data.category}-${data.name} <button type="button" class="btn btn-danger" id="deleteBtn"onClick= "Delete('${data._id}','${data.category}LI')">Delete Order</button></li>`;
+  parentNode.innerHTML += childHTML;
 }
 
-// PUT/PATCH REQUEST
-function updateTodo() {
-  console.log('PUT/PATCH Request');
+function Delete(crudId,listId) {
+    axios.delete(`https://crudcrud.com/api/f0de899ddf6c44438f7faf9c1e24662d/productData/${crudId}`)
+    .then(res => {
+        console.log(res)
+    })
+    .catch(err => {
+        console.error(err); 
+    })
+    let deleteNode = document.getElementById(listId);
+    deleteNode.remove(); 
 }
-
-// DELETE REQUEST
-function removeTodo() {
-  console.log('DELETE Request');
-}
-
-// SIMULTANEOUS DATA
-function getData() {
-  console.log('Simultaneous Request');
-}
-
-// CUSTOM HEADERS
-function customHeaders() {
-  console.log('Custom Headers');
-}
-
-// TRANSFORMING REQUESTS & RESPONSES
-function transformResponse() {
-  console.log('Transform Response');
-}
-
-// ERROR HANDLING
-function errorHandling() {
-  console.log('Error Handling');
-}
-
-// CANCEL TOKEN
-function cancelToken() {
-  console.log('Cancel Token');
-}
-
-// INTERCEPTING REQUESTS & RESPONSES
-
-// AXIOS INSTANCES
-
-// Show output in browser
-function showOutput(res) {
-  document.getElementById('res').innerHTML = `
-  <div class="card card-body mb-4">
-    <h5>Status: ${res.status}</h5>
-  </div>
-
-  <div class="card mt-3">
-    <div class="card-header">
-      Headers
-    </div>
-    <div class="card-body">
-      <pre>${JSON.stringify(res.headers, null, 2)}</pre>
-    </div>
-  </div>
-
-  <div class="card mt-3">
-    <div class="card-header">
-      Data
-    </div>
-    <div class="card-body">
-      <pre>${JSON.stringify(res.data, null, 2)}</pre>
-    </div>
-  </div>
-
-  <div class="card mt-3">
-    <div class="card-header">
-      Config
-    </div>
-    <div class="card-body">
-      <pre>${JSON.stringify(res.config, null, 2)}</pre>
-    </div>
-  </div>
-`;
-}
-
-// Event listeners
-document.getElementById('get').addEventListener('click', getTodos);
-document.getElementById('post').addEventListener('click', addTodo);
-document.getElementById('update').addEventListener('click', updateTodo);
-document.getElementById('delete').addEventListener('click', removeTodo);
-document.getElementById('sim').addEventListener('click', getData);
-document.getElementById('headers').addEventListener('click', customHeaders);
-document
-  .getElementById('transform')
-  .addEventListener('click', transformResponse);
-document.getElementById('error').addEventListener('click', errorHandling);
-document.getElementById('cancel').addEventListener('click', cancelToken);

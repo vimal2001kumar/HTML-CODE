@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html>
+<head>
+    <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,42 +13,58 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="style.css" />
+    
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
-  <body>
-    <h1>Seller Admin Dashboard</h1>
-    <form id="form">
+
+</head>
+<body>
+    <form>
+        <h1>Seller Admin Dashboard</h1>
         <h2>Add Product</h2>
-      <div id="priceDiv">
-        <label for="price">Selling Price</label>
-        <input type="text" id="price" />
-      </div>
-      <div id="nameDiv">
-        <label for="name">Product Name</label>
-        <input type="text" id="name" />
-      </div>
-      <div id="categoryDiv">
-        <label for="category">Choose a Category</label>
-        <select id="category">
-          <option>Electronics</option>
-          <option>Food</option>
-          <option>SkinCare</option>
-        </select>
-      </div>
-      <div id="submitDiv">
-        <input id="submitBtn" type="button" class="btn btn-primary" type="submit" value="Add Product" />
-      </div>
+        <div>
+            <label for="productCode">Selling Price:</label>
+            <input type="number" name="productCode" id="productCode" required>
+        </div>
+        
+
+        <div>
+            <label for="product">Product Name:</label>
+            <input type="text" name="product" id="product" required>
+        </div>
+
+        <div>
+            <label for="category">Choose a Category:</label>
+            <select id="category" required>
+                <option value="Electronics">Electronics</option>
+                <option value="Food">Food</option>
+                <option value="SkinCare">SkinCare</option>
+           </select>
+        </div>
+
+        <div class="form_action--button">
+            <input id="submitBtn" type="submit" class="btn btn-primary" type="Submit" value="Add Product" />
+        </div>
     </form>
     <h2>Products</h2>
-    <ul id="ElectronicsUL">
-      <h2>Electronic Items</h2>
-    </ul>
-    <ul id="FoodUL">
-      <h2>Food Items</h2>
-    </ul>
-    <ul id="SkinCareUL">
-      <h2>SkinCare Items</h2>
-    </ul>
+    <h4>Electronics Items</h4>
+      <ul id="Electronics">
+          <li>
+                          
+          </li>
+      </ul>
+    <h4>Food Items</h4>
+      <ul id="Food">
+          <li>
+                          
+          </li>
+      </ul>
+    <h4>SkinCare Items</h4>
+      <ul id="SkinCare">
+          <li>
+                          
+          </li>
+      </ul>
   </body>
   <script src="main.js"></script>
-</html>
+  </html>

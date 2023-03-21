@@ -1,68 +1,121 @@
-const priceInput = document.getElementById("price");
-const productInput = document.getElementById("name");
-const categoryInput = document.getElementById("category");
-const myForm = document.getElementById("form");
+const form = document.querySelector('form');
+        const ElectronicsDiv = document.getElementById('Electronics');
+        const FoodDiv = document.getElementById('Food');
+        const SkinCareDiv = document.getElementById('SkinCare');
 
-myForm.addEventListener("submit", onSubmit);
+        // Display existing items on page load
+        displayItems();
 
-window.addEventListener("DOMContentLoaded", () => {
-  axios
-    .get(
-      "https://crudcrud.com/api/f0de899ddf6c44438f7faf9c1e24662d/productData"
-    )
-    .then((res) => {
-      res.data.forEach((element) => {
-        display(element);
-      });
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-});
+        // Handle form submission
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
 
-//onSubmitOfForm
-function onSubmit(e) {
-  e.preventDefault();
-  if (
-    priceInput.value === "" ||
-    productInput.value === "" ||
-    categoryInput.value === ""
-  ) {
-    ;
-  } else {
-    let newData = {
-      price: priceInput.value,
-      name: priceInput.value,
-      category: categoryInput.value,
-    };
-    axios
-      .post(
-        "https://crudcrud.com/api/f0de899ddf6c44438f7faf9c1e24662d/productData",
-        newData
-      )
-      .then((res) => {
-        display(newData);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
-}
+            const productCode = document.getElementById('productCode').value;
+            const productName = document.getElementById('product').value;
+            const category = document.getElementById('category').value;
 
-function display(data) {
-  const parentNode = document.getElementById(`${data.category}UL`);
-  const childHTML = `<li id="${data.category}LI">${data.price}-${data.category}-${data.name} <button type="button" class="btn btn-danger" id="deleteBtn"onClick= "Delete('${data._id}','${data.category}LI')">Delete Order</button></li>`;
-  parentNode.innerHTML += childHTML;
-}
+            // Add the item to local storage
+            addItemByCategory(category, productCode, productName);
 
-function Delete(crudId,listId) {
-    axios.delete(`https://crudcrud.com/api/f0de899ddf6c44438f7faf9c1e24662d/productData/${crudId}`)
-    .then(res => {
-        console.log(res)
-    })
-    .catch(err => {
-        console.error(err); 
-    })
-    let deleteNode = document.getElementById(listId);
-    deleteNode.remove(); 
-}
+            // Clear the form
+            form.reset();
+
+            // Update the list of items on the page
+            displayItems();
+        });
+
+        // Add item to local storage
+        function addItemByCategory(category, productCode, productName) {
+            // Get existing items for the selected category
+            const items = localStorage.getItem(category);
+            let itemList = items ? JSON.parse(items) : [];
+
+            // Add the new item to the list and save it to local storage
+            itemList.push({ category, productCode, productName});
+            localStorage.setItem(category, JSON.stringify(itemList));
+        }
+        function displayItems() {
+    // Clear the existing list of items
+            ElectronicsDiv.innerHTML = '';
+            FoodDiv.innerHTML = '';
+            SkinCareDiv.innerHTML = '';
+
+            // Loop through all items in local storage and add them to the appropriate category div
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const value = localStorage.getItem(key);
+
+                if (key === 'Electronics') {
+                    const itemList = JSON.parse(value);
+                    for (let j = 0; j < itemList.length; j++) {
+                        const { category, productCode, productName } = itemList[j];
+
+                        const itemDiv = document.createElement('li');
+                        itemDiv.classList.add('item');
+                        itemDiv.textContent = `${productCode} - ${category} - ${productName}`;
+
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.textContent = 'Delete Order';
+                        deleteBtn.addEventListener('click', () => {
+                            // Remove the item from local storage
+                            itemList.splice(j, 1);
+                            localStorage.setItem(key, JSON.stringify(itemList));
+
+                            // Update the list of items on the page
+                            displayItems();
+                        });
+
+                        itemDiv.appendChild(deleteBtn);
+                        ElectronicsDiv.appendChild(itemDiv);
+                    }
+                }
+                 else if (key === 'Food') {
+                    const itemList = JSON.parse(value);
+                    for (let j = 0; j < itemList.length; j++) {
+                        const { category, productCode, productName } = itemList[j];
+
+                        const itemDiv = document.createElement('li');
+                        itemDiv.classList.add('item');
+                        itemDiv.textContent = `${productCode} - ${category} - ${productName}`;
+
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.textContent = 'Delete Order';
+                        deleteBtn.addEventListener('click', () => {
+                            // Remove the item from local storage
+                            itemList.splice(j, 1);
+                            localStorage.setItem(key, JSON.stringify(itemList));
+
+                            // Update the list of items on the page
+                            displayItems();
+                        });
+
+                        itemDiv.appendChild(deleteBtn);
+                        FoodDiv.appendChild(itemDiv);
+                    }
+                }
+                else if (key === 'SkinCare') {
+                    const itemList = JSON.parse(value);
+                    for (let j = 0; j < itemList.length; j++) {
+                        const { category, productCode, productName } = itemList[j];
+
+                        const itemDiv = document.createElement('li');
+                        itemDiv.classList.add('item');
+                        itemDiv.textContent = `${productCode} - ${category} - ${productName}`;
+
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.textContent = 'Delete Order';
+                        deleteBtn.addEventListener('click', () => {
+                            // Remove the item from local storage
+                            itemList.splice(j, 1);
+                            localStorage.setItem(key, JSON.stringify(itemList));
+
+                            // Update the list of items on the page
+                            displayItems();
+                        });
+
+                        itemDiv.appendChild(deleteBtn);
+                        SkinCareDiv.appendChild(itemDiv);
+                    }
+                }
+            }
+        }
